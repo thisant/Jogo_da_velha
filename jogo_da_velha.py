@@ -100,7 +100,6 @@ def exibir(estado, computador_simbolo, jogador_simbolo):
             print(f'| {simbolo}', end='|')
         print('\n' + separacao)
 
-
 def limpar():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -135,7 +134,6 @@ def vezJogador(computador_simbolo, humano_simbolo):
         except (KeyError, ValueError):
             print('Local errado')
 
-
 def vezComputador(computador_simbolo, jogador_simbolo):
     profundidade = len(espacoVazio(tabuleiro))
     if profundidade == 0 or fimDoJogo(tabuleiro):
@@ -154,7 +152,6 @@ def vezComputador(computador_simbolo, jogador_simbolo):
 
     escolherMovimento(x, y, ia)
     time.sleep(1)
-
 
 def main():
     limpar()
