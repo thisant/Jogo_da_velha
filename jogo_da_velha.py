@@ -46,14 +46,14 @@ def espacoVazio(state):
 
     return celulas
 
-def movimento_valido(x, y):
+def movimentoValido(x, y):
     if [x, y] in espacoVazio(tabuleiro):
         return True
     else:
         return False
 
 def escolherMovimento(x, y, jogador):
-    if movimento_valido(x, y):
+    if movimentoValido(x, y):
         tabuleiro[x][y] = jogador
         return True
     else:
