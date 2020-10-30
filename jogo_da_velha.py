@@ -7,7 +7,6 @@ humano = -1
 ia = +1
 tabuleiro = [[0, 0, 0], [0, 0, 0], [0, 0, 0], ]
 
-
 def vitoria(estado, jogador):
     jogos_vitoriosos = [
         [estado[0][0], estado[0][1], estado[0][2]],
@@ -24,12 +23,10 @@ def vitoria(estado, jogador):
     else:
         return False
 
-
-def fim_do_jogo(estado):
+def fimDoJogo(estado):
     return vitoria(estado, humano) or vitoria(estado, ia)
 
-
-def calculando_placar(estado):
+def calculandoPlacar(estado):
     if vitoria(estado, ia):
         placar = +1
     elif vitoria(estado, humano):
@@ -39,8 +36,7 @@ def calculando_placar(estado):
 
     return placar
 
-
-def espaco_vazio(state):
+def espacoVazio(state):
     celulas = []
 
     for x, row in enumerate(state):
@@ -50,36 +46,33 @@ def espaco_vazio(state):
 
     return celulas
 
-
 def movimento_valido(x, y):
-    if [x, y] in espaco_vazio(tabuleiro):
+    if [x, y] in espacoVazio(tabuleiro):
         return True
     else:
         return False
 
-
-def escolher_movimento(x, y, jogador):
+def escolherMovimento(x, y, jogador):
     if movimento_valido(x, y):
         tabuleiro[x][y] = jogador
         return True
     else:
         return False
 
-
-def minimax(estado, profundidade, jogador):
+def miniMax(estado, profundidade, jogador):
     if jogador == ia:
         melhor_pontuacao = [-1, -1, -infinity]
     else:
         melhor_pontuacao = [-1, -1, +infinity]
 
-    if profundidade == 0 or fim_do_jogo(estado):
-        placar = calculando_placar(estado)
+    if profundidade == 0 or fimDoJogo(estado):
+        placar = calculandoPlacar(estado)
         return [-1, -1, placar]
 
-    for espaco in espaco_vazio(estado):
+    for espaco in espacoVazio(estado):
         x, y = espaco[0], espaco[1]
         estado[x][y] = jogador
-        placar = minimax(estado, profundidade - 1, -jogador)
+        placar = miniMax(estado, profundidade - 1, -jogador)
         estado[x][y] = 0
         placar[0], placar[1] = x, y
 
@@ -91,7 +84,6 @@ def minimax(estado, profundidade, jogador):
                 melhor_pontuacao = placar
 
     return melhor_pontuacao
-
 
 def exibir(estado, computador_simbolo, jogador_simbolo):
     simbolos = {
@@ -112,10 +104,9 @@ def exibir(estado, computador_simbolo, jogador_simbolo):
 def limpar():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
-def vez_jogador(computador_simbolo, humano_simbolo):
-    profundidade = len(espaco_vazio(tabuleiro))
-    if profundidade == 0 or fim_do_jogo(tabuleiro):
+def vezJogador(computador_simbolo, humano_simbolo):
+    profundidade = len(espacoVazio(tabuleiro))
+    if profundidade == 0 or fimDoJogo(tabuleiro):
         return
 
     posicao = -1
@@ -133,7 +124,7 @@ def vez_jogador(computador_simbolo, humano_simbolo):
         try:
             posicao = int(input('Escolha uma posição de 1 a 9: '))
             coord = movimentos[posicao]
-            pode_mover = escolher_movimento(coord[0], coord[1], humano)
+            pode_mover = escolherMovimento(coord[0], coord[1], humano)
 
             if not pode_mover:
                 print('Local errado')
@@ -145,9 +136,9 @@ def vez_jogador(computador_simbolo, humano_simbolo):
             print('Local errado')
 
 
-def vez_computador(computador_simbolo, jogador_simbolo):
-    profundidade = len(espaco_vazio(tabuleiro))
-    if profundidade == 0 or fim_do_jogo(tabuleiro):
+def vezComputador(computador_simbolo, jogador_simbolo):
+    profundidade = len(espacoVazio(tabuleiro))
+    if profundidade == 0 or fimDoJogo(tabuleiro):
         return
 
     limpar()
@@ -158,10 +149,10 @@ def vez_computador(computador_simbolo, jogador_simbolo):
         x = choice([0, 1, 2])
         y = choice([0, 1, 2])
     else:
-        movimento = minimax(tabuleiro, profundidade, ia)
+        movimento = miniMax(tabuleiro, profundidade, ia)
         x, y = movimento[0], movimento[1]
 
-    escolher_movimento(x, y, ia)
+    escolherMovimento(x, y, ia)
     time.sleep(1)
 
 
@@ -170,9 +161,9 @@ def main():
     jogador_simbolo = 'O'
     computador_simbolo = 'X'
 
-    while len(espaco_vazio(tabuleiro)) > 0 and not fim_do_jogo(tabuleiro):
-        vez_computador(computador_simbolo, jogador_simbolo)
-        vez_jogador(computador_simbolo, jogador_simbolo)
+    while len(espacoVazio(tabuleiro)) > 0 and not fimDoJogo(tabuleiro):
+        vezComputador(computador_simbolo, jogador_simbolo)
+        vezJogador(computador_simbolo, jogador_simbolo)
 
     if vitoria(tabuleiro, humano):
         limpar()
@@ -189,7 +180,6 @@ def main():
         exibir(tabuleiro, computador_simbolo, jogador_simbolo)
         print('Empate!')
     exit()
-
 
 if __name__ == '__main__':
     main()
